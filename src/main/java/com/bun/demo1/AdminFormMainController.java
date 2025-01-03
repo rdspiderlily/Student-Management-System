@@ -33,10 +33,7 @@ import javafx.stage.Modality;
 import javafx.stage.Stage;
 import javafx.util.Duration;
 
-import javax.swing.*;
-import javax.swing.plaf.nimbus.State;
 import java.io.File;
-import java.io.IOException;
 import java.net.URL;
 import java.sql.*;
 import java.time.LocalDate;
