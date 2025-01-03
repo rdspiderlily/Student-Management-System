@@ -1,8 +1,5 @@
 package com.bun.demo1;
 
-import javafx.animation.KeyFrame;
-import javafx.animation.Timeline;
-import javafx.beans.property.SimpleObjectProperty;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.event.ActionEvent;
@@ -15,11 +12,11 @@ import javafx.scene.control.*;
 import javafx.scene.image.Image;
 import javafx.scene.layout.*;
 import javafx.stage.Stage;
-import javafx.util.Duration;
 
+
+import javax.imageio.IIOParam;
 import java.net.URL;
 import java.sql.*;
-import java.text.SimpleDateFormat;
 import java.util.*;
 import java.util.Date;
 import java.util.ResourceBundle;
@@ -91,6 +88,7 @@ public class HelloController implements Initializable {
     private Statement statement;
 
     private AlertMessage alert = new AlertMessage();
+    private IIOParam loader;
 
     public void loginAccount() {
         if(login_username.getText().isEmpty() || login_password.getText().isEmpty()) {
@@ -108,7 +106,6 @@ public class HelloController implements Initializable {
 
                 if(result.next()){
                     role = result.getString("role");
-                    System.out.println(role);
                     Thread.sleep(1000);
                     if(role.equals("Admin")) {
                         getData.login_username = login_username.getText();
@@ -124,8 +121,21 @@ public class HelloController implements Initializable {
                         //To hide login form
                         login_btn.getScene().getWindow().hide();
                     }else if (role.equals("Student")) {
+                        getData.login_username = login_username.getText();
+
                         //LINK MAIN FORM STUDENT
-                        Parent root = FXMLLoader.load(getClass().getResource("StudentFormMain.fxml"));
+                        // Retrieve the studentID (username in your case) from the result
+                        String studentID = result.getString("username"); // Assuming studentID is stored in "username" field
+
+                        // Load the StudentFormMain.fxml
+                        FXMLLoader loader = new FXMLLoader(getClass().getResource("StudentFormMain.fxml"));
+                        Parent root = loader.load();
+
+                        // Get the controller of the StudentFormMain
+                        StudentFormController studentController = loader.getController();
+
+                        // Pass the studentID (or username) to the controller
+                        studentController.setStudentID(studentID);
 
                         Stage stage = new Stage();
                         stage.setTitle("LINCOLN NATIONAL HIGH SCHOOL");
